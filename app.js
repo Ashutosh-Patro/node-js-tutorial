@@ -1,9 +1,14 @@
-import { readFile } from "fs";
+import { createReadStream } from "fs";
 
-readFile("./content/first.txt", "utf8", (err, data) => {
-  if (err) {
-    return;
-  } else {
-    console.log(data);
-  }
+const stream = createReadStream(
+  "./content/big.txt",
+  { highWaterMark: 90000 },
+  { encoding: "utf8" }
+);
+
+stream.on("data", (result) => {
+  console.log(result);
+});
+stream.on("error", (err) => {
+  console.log(err);
 });
